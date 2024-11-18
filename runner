@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# Execute the CLI app with the provided hotel_ids and destination_ids
+python main.py "$1" "$2"
