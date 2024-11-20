@@ -19,7 +19,14 @@ This project aggregates hotel data from multiple supplier URLs and filters the d
 
 ## Usage
 
-To run the project, use the following command:
+To run the project, use the following command in a bash shell:
 
-```sh
-python [main.py](http://_vscodecontentref_/1) "<hotel_ids>" "<destination_ids>"
+./runner $1 $2
+
+where:
+- **$1** is the list of string that contains a list of value, each of which is separated by a comma , for hotel_ids
+- **$2** is the list of string that contains a list of value, each of which is separated by a comma , for destination_ids
+- In the case that the list is empty, the value of the argument is none.
+
+For example:
+    ./runner iJhz,SjyX 5432
