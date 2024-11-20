@@ -111,22 +111,18 @@ def merge_responses(hotels, response):
         hotel_id = str(entry_items[0][1])  # Ensure hotel_id is a string
         destination_id = str(entry_items[1][1])  # Ensure destination_id is a string
         
-        print(f"Processing entry: hotel_id={hotel_id}, destination_id={destination_id}")
-        
         if hotel_id and destination_id:
             # Check if the hotel already exists in the hotels array
             existing_hotel = next((hotel for hotel in hotels if hotel.hotel_id == hotel_id and hotel.destination_id == destination_id), None)
             if existing_hotel:
-                print(f"Merging with existing hotel: {existing_hotel.hotel_id}, {existing_hotel.destination_id}")
                 # Merge the new entry with the existing hotel data
                 existing_hotel.merge(entry)
             else:
-                print(f"Creating new hotel entry: {hotel_id}, {destination_id}")
                 # Create a new Hotel object and add it to the hotels array
                 new_hotel = Hotel.from_entry(entry)
                 hotels.append(new_hotel)
-        else:
-            print(f"Skipping entry: hotel_id={hotel_id}, destination_id={destination_id} (missing hotel_id or destination_id)")
+        # If hotel_id or destination_id is missing, skip the entry
+        continue
 
 def filter_aggregated_data(hotels, hotel_ids, destination_ids):
     """Filter the aggregated data to include only entries that match all provided hotel_ids and destination_ids."""
@@ -152,10 +148,13 @@ def main():
         merge_responses(hotels, response)
     
     if not hotel_ids and not destination_ids:
-        print(json.dumps([hotel.__dict__ for hotel in hotels], indent=4))
+        result = json.dumps([hotel.__dict__ for hotel in hotels], indent=4)
     else:
         filtered_hotels = filter_aggregated_data(hotels, hotel_ids, destination_ids)
-        print(json.dumps([hotel.__dict__ for hotel in filtered_hotels], indent=4))
+        result = json.dumps([hotel.__dict__ for hotel in filtered_hotels], indent=4)
+    
+    print(result)
+    return result
 
 if __name__ == "__main__":
     main()
